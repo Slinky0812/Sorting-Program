@@ -86,6 +86,10 @@ int bubble (int list[], int length) {
 
 //insertion sort
 int insertion (int list[], int length) {
+
+    // for (int i = 0; i < length; i++) {
+
+    // }
     printf("inserted\n");
     return 0;
 }
