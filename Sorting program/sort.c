@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "sort.h"
 
 int main(int argc, char **argv) {
@@ -20,6 +21,11 @@ int main(int argc, char **argv) {
     for (int i = 0; i < length; i++) {
         scanf("%d", &list[i]);
     }
+
+    // for (int i = 0; i < length; i++) {
+    //     printf("%d  ", list[i]);
+    // }
+    // printf("\n");
 
     //Choosing which sorting algorithm to use
     int choice;
@@ -61,14 +67,14 @@ int bubble (int list[], int length) {
         int temp;
         //runs through the list
         for (int i = 0; i < length; i++) {
-            //swap if the next value is greater than the current one
-            if (list[i] > list[i+1]) {
-                temp = list[i];
-                list[i] = list[i+1];
-                list[i+1] = temp;
-                //increment count
-                count += 1;
-            }
+               //swap if the next value is greater than the current one
+                if (list[i] > list[i+1]) {
+                    temp = list[i];
+                    list[i] = list[i+1];    
+                    list[i+1] = temp;
+                    //increment count
+                    count += 1;
+                }
         }
         //if count is 0, no swaps have been made, meaning algorithm is complete.
         if (count == 0) {
@@ -86,11 +92,41 @@ int bubble (int list[], int length) {
 
 //insertion sort
 int insertion (int list[], int length) {
+    //new list to store the sorted numbers
+    int sorted[length];
+    //swap variable
+    int temp;
+    //stores the first variable of the list into the sorted list
+    sorted[0] = list[0];
 
-    // for (int i = 0; i < length; i++) {
-    //     printf("tests");
-    // }
-    printf("inserted\n");
+    //runs through the list
+    for (int i = 1; i < length; i++) {
+        //store the data into the sorted list
+        sorted[i] = list[i];
+        //count variable to change position of data in sorted list
+        int count = i;
+        
+        //runs through the sorted list
+        for (int j = 1; j <= i; j++) {
+            //swap values
+            if (sorted[count] < sorted[i-j]) {
+                temp = sorted[i-j];
+                sorted[i-j] = sorted[count];    
+                sorted[count] = temp;
+                //decrease count
+                count -= 1;
+            //no swap needed
+            } else {
+                break;
+            }
+        }
+    }
+
+    //print sorted list
+    for (int i = 0; i < length; i++) {
+        printf("%d\n", sorted[i]);
+    }
+    //insertion sort successful
     return 0;
 }
 
