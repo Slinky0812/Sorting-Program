@@ -46,7 +46,14 @@ int main(int argc, char **argv) {
     } else if (choice == 2) {
         insertion(list, length);
     } else if (choice == 3) {
-        merge(list, length);
+        int start = 0;
+        int end = length - 1;
+        merge(list, start, end);
+        //print sorted list
+        for (int i = 0; i < length; i++) {
+            printf("%d\n", list[i]);
+        }
+
     } else {
         quick(list, length);
     }
@@ -131,9 +138,42 @@ int insertion (int list[], int length) {
 }
 
 //merge sort
-int merge (int list[], int length) {
-    printf("merged\n");
-    return 0;
+void merge (int list[], int start, int end) {
+
+    int sorted[end + 1];
+
+    if (start <= end) {
+        return;
+    } else {
+        int middle = (start + end) / 2;
+        merge(list, start, middle);
+        merge(list, middle + 1, end);
+
+        int left = start;
+        int right = middle + 1;
+        
+        for (int i = start; i <= end; i++) {
+            if (left == middle + 1) {
+                sorted[i] = list[right];
+                right+=1;
+            } else if (right == end + 1) {
+                sorted[i] = list[left];
+                left+=1;
+            } else if (list[left] < list[right]) {
+                sorted[i] = list[left];
+                left+=1;
+            } else {
+                sorted[i] = list[right];
+                right+=1;
+            }
+        }
+    }
+
+    for (int i = start; i < end; i++) {
+        list[i] = sorted[i];
+    }
+
+    //return 0;
 }
 
 //quick sort
