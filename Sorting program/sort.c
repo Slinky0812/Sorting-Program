@@ -22,11 +22,6 @@ int main(int argc, char **argv) {
         scanf("%d", &list[i]);
     }
 
-    // for (int i = 0; i < length; i++) {
-    //     printf("%d  ", list[i]);
-    // }
-    // printf("\n");
-
     //Choosing which sorting algorithm to use
     int choice;
     printf("Sorting Options:\n");
@@ -46,14 +41,8 @@ int main(int argc, char **argv) {
     } else if (choice == 2) {
         insertion(list, length);
     } else if (choice == 3) {
-        int start = 0;
-        int end = length - 1;
-        merge(list, start, end);
-        //print sorted list
-        for (int i = 0; i < length; i++) {
-            printf("%d\n", list[i]);
-        }
-
+        int size = sizeof(list) / sizeof(list[0]);
+        merge(list, 0, size-1);
     } else {
         quick(list, length);
     }
@@ -137,43 +126,81 @@ int insertion (int list[], int length) {
     return 0;
 }
 
+//sorting function for merge sort
+void mergeSort (int list[], int start, int middle, int end) {
+
+    //calculate the length of the lists to be put together
+    int length1 = middle - start + 1;
+    int length2 = end - middle;
+
+    //create temp lists
+    int a1[length1];
+    int a2[length2];
+
+    //put values at the beginning of the list into a1
+    for (int i = 0; i < length1; i++) {
+        a1[i] = list[start + i];
+    }
+    //put values from the middle of the list into a2
+    for (int j = 0; j < length2; j++) {
+        a2[j] = list[middle + 1 + j];
+    }
+
+    //index of a1
+    int i = 0;
+    //index of a2
+    int j = 0;
+    //index of main list
+    int k = start;
+
+    //runs until we reach the end of either a1 or a2
+    while (i < length1 && j < length2) {
+        //picks the smaller value out of either a1 or a2, and puts it into the list
+        if (a1[i] <= a2[j]) {
+            list[k] = a1[i];
+            //increment a1 counter
+            i+=1; 
+        } else {
+            list[k] = a2[j];
+            //increment a2 counter
+            j+=1;
+        }
+        //increment main counter
+        k+=1;
+    }
+
+    //once we reach the end of either a1 or a2, put the remaining elements from a1 into list
+    while (i < length1) {
+        list[k] = a1[i];
+        i += 1;
+        k += 1;
+    }
+
+    //put the remaining elements of a2 into the list
+    while (j < length2) {
+        list[k] = a2[j];
+        j += 1;
+        k += 1;
+    }
+
+}
+
 //merge sort
-void merge (int list[], int start, int end) {
+int merge (int list[], int start, int end) {
 
-    int sorted[end + 1];
-
-    if (start <= end) {
-        return;
-    } else {
-        int middle = (start + end) / 2;
+    //if list isn't of length 1
+    if (start < end) {
+        //calculate middle value
+        int middle = (start + (end-1)) / 2;
+        //divide the list into 2 lists recursively
         merge(list, start, middle);
         merge(list, middle + 1, end);
 
-        int left = start;
-        int right = middle + 1;
-        
-        for (int i = start; i <= end; i++) {
-            if (left == middle + 1) {
-                sorted[i] = list[right];
-                right+=1;
-            } else if (right == end + 1) {
-                sorted[i] = list[left];
-                left+=1;
-            } else if (list[left] < list[right]) {
-                sorted[i] = list[left];
-                left+=1;
-            } else {
-                sorted[i] = list[right];
-                right+=1;
-            }
-        }
+        //call the sorting function
+        mergeSort(list, start, middle, end);
     }
 
-    for (int i = start; i < end; i++) {
-        list[i] = sorted[i];
-    }
-
-    //return 0;
+    return 0;
 }
 
 //quick sort
