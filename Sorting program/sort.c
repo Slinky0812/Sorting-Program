@@ -41,14 +41,19 @@ int main(int argc, char **argv) {
     } else if (choice == 2) {
         insertion(list, length);
     } else if (choice == 3) {
-        int size = sizeof(list) / sizeof(list[0]);
-        merge(list, 0, size-1);
+        merge(list, 0, length-1);
     } else {
-        quick(list, length);
+        quick(list, 0, length - 1);
     }
-
     printf("SORTED\n");
     return 0;
+}
+
+//swap values function
+void swap (int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 //bubble sort
@@ -65,9 +70,10 @@ int bubble (int list[], int length) {
         for (int i = 0; i < length; i++) {
                //swap if the next value is greater than the current one
                 if (list[i] > list[i+1]) {
-                    temp = list[i];
-                    list[i] = list[i+1];    
-                    list[i+1] = temp;
+                    swap (&list[i], &list[i+1]);
+                    // temp = list[i];
+                    // list[i] = list[i+1];    
+                    // list[i+1] = temp;
                     //increment count
                     count += 1;
                 }
@@ -78,10 +84,6 @@ int bubble (int list[], int length) {
         }
     }
 
-    //print sorted list
-    for (int i = 0; i < length; i++) {
-        printf("%d\n", list[i]);
-    }
     //bubble sort successful
     return 0;
 }
@@ -106,9 +108,10 @@ int insertion (int list[], int length) {
         for (int j = 1; j <= i; j++) {
             //swap values
             if (sorted[count] < sorted[i-j]) {
-                temp = sorted[i-j];
-                sorted[i-j] = sorted[count];    
-                sorted[count] = temp;
+                swap (&sorted[i-j], &sorted[count]);
+                // temp = sorted[i-j];
+                // sorted[i-j] = sorted[count];    
+                // sorted[count] = temp;
                 //decrease count
                 count -= 1;
             //no swap needed
@@ -118,10 +121,6 @@ int insertion (int list[], int length) {
         }
     }
 
-    //print sorted list
-    for (int i = 0; i < length; i++) {
-        printf("%d\n", sorted[i]);
-    }
     //insertion sort successful
     return 0;
 }
@@ -200,11 +199,48 @@ int merge (int list[], int start, int end) {
         mergeSort(list, start, middle, end);
     }
 
+    //merge sort successful
     return 0;
 }
 
+//function to put the pivot element in the right place (partitioning the list)
+int partition (int list[], int left, int right) {
+
+    //select the rightmost element of the list as the pivot
+    int pivot = list[right];
+
+    //pointer for finding greater element(s)
+    int i = left - 1;
+
+    //runs through the list, and compares them with the pivot
+    for (int j = left; j < right; j++) {
+        //if less than pivot, swap with element pointed at by i
+        if (list[j] <= pivot) {
+            i+=1;
+            swap(&list[i], &list[j]);
+        }
+    }
+
+    //swap the pivot element with grater element at i
+    swap (&list[i+1], &list[right]);
+
+    //return the point of partition
+    return (i+1);
+}
+
 //quick sort
-int quick (int list[], int length) {
-    printf("quick\n");
+int quick (int list[], int start, int end) {
+
+    if (start < end) {
+        //find the pivot element and put all elements < pivot on the left, and all elements > pivot on the right
+        int pivot = partition(list, start, end);
+
+        //call the left side of the pivot recursively
+        quick (list, start, pivot - 1);
+        //call the right side of the pivot recursively
+        quick (list, pivot + 1, end);
+    }
+
+    //quick sort successful
     return 0;
 }
