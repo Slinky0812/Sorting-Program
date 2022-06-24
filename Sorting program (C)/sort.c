@@ -45,6 +45,14 @@ int main(int argc, char **argv) {
     } else {
         quick(list, 0, length - 1);
     }
+
+    //print sorted list
+    for (int i = 0; i < length; i++) {
+        printf("%d ", list[i]);
+    }
+    printf("\n");
+
+
     printf("SORTED\n");
     return 0;
 }
@@ -64,16 +72,12 @@ int bubble (int list[], int length) {
     while (run == 1) {
         //increments whenever a swap is made
         int count = 0;
-        //stores the value of a variable being swapped
-        int temp;
         //runs through the list
         for (int i = 0; i < length; i++) {
                //swap if the next value is greater than the current one
                 if (list[i] > list[i+1]) {
                     swap (&list[i], &list[i+1]);
-                    // temp = list[i];
-                    // list[i] = list[i+1];    
-                    // list[i+1] = temp;
+
                     //increment count
                     count += 1;
                 }
@@ -92,8 +96,6 @@ int bubble (int list[], int length) {
 int insertion (int list[], int length) {
     //new list to store the sorted numbers
     int sorted[length];
-    //swap variable
-    int temp;
     //stores the first variable of the list into the sorted list
     sorted[0] = list[0];
 
@@ -109,9 +111,6 @@ int insertion (int list[], int length) {
             //swap values
             if (sorted[count] < sorted[i-j]) {
                 swap (&sorted[i-j], &sorted[count]);
-                // temp = sorted[i-j];
-                // sorted[i-j] = sorted[count];    
-                // sorted[count] = temp;
                 //decrease count
                 count -= 1;
             //no swap needed
@@ -221,7 +220,7 @@ int partition (int list[], int left, int right) {
         }
     }
 
-    //swap the pivot element with grater element at i
+    //swap the pivot element with element at the rightmost position
     swap (&list[i+1], &list[right]);
 
     //return the point of partition
